@@ -5,17 +5,18 @@ import (
 	"fmt"
 )
 
-type Headers struct {
-	header map[string]string
-}
+//type Headers struct {
+	type Headers map[string]string
+//}
 
 var endLine = []byte("\r\n")
 var badfdline = fmt.Errorf("malformed field-line!")
 var badfdname = fmt.Errorf("malformed field-name!")
 
 func ParseHeaders(data []byte) (string, string, error) {
-	head  :=bytes.SplitN(data, []byte(":"), 2)
+	head:=bytes.SplitN(data, []byte(":"), 2)
 	if len(head) != 2 {
+
 		return "", "", badfdline
 	}
 	if bytes.HasSuffix(head[0], []byte(" ")) {
@@ -30,24 +31,32 @@ func ParseHeaders(data []byte) (string, string, error) {
 	
 }
 
-func newHeaders() {
+func NewHeaders() Headers {
+	return map[string]string{}
 }
 
 func (h Headers) Parse(data []byte) (int, bool, error) {
-	idx := bytes.Index(data, endLine)
-	if idx == -1 {
-		return 0, false, badfdline
-
+	n := 0
+	done := false
+free :
+	for {
+		idx := bytes.Index(data[n:], endLine)
+		if idx == -1 {
+			break free
+		}
+		if idx == 0 {
+			done = true
+			n = idx + len(endLine)
+			break free
+		}
+		name, value, err := ParseHeaders(data[idx:+idx+n])
+		if err != nil {
+			return 0, false, err 
+		}
+		n = idx + len(endLine)
+		h[name] = value
 	}
-	if idx == 0 {
-		return idx, true, nil
-	}
-	name, value, err := ParseHeaders(data[:idx])
-	if err != nil {
-		return 0, false, badfdline
-	}
-	n := idx + len(endLine)
-	return n, false, nil
+	return n, done, nil
 
 
 }
