@@ -46,14 +46,14 @@ free :
 		}
 		if idx == 0 {
 			done = true
-			n = idx + len(endLine)
+			n += len(endLine)
 			break free
 		}
-		name, value, err := ParseHeaders(data[idx:+idx+n])
+		name, value, err := ParseHeaders(data[n:+idx+n])
 		if err != nil {
 			return 0, false, err 
 		}
-		n = idx + len(endLine)
+		n += idx + len(endLine)
 		h[name] = value
 	}
 	return n, done, nil

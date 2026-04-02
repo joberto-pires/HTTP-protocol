@@ -16,7 +16,7 @@ func TestRequestLineParse(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, headers)
 	assert.Equal(t, "localhost:42069", headers["Host"])
-	assert.Equal(t, 23, n)
+	assert.Equal(t, 25, n)
 	assert.True(t, done)
 
 	// Test: Invalid spacing header

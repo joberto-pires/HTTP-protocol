@@ -22,9 +22,9 @@ func main() {
 		  fmt.Println("error : %w", err)
 		}
 		fmt.Println("Request line: ")
-		fmt.Printf("- Method: %s\n", req.RequestLine.Method)
-		fmt.Printf("- Target: %s\n", req.RequestLine.RequestTarget)
-		fmt.Printf("- Version: %s\n", req.RequestLine.HttpVersion)
+		fmt.Printf("- Method   :   %s\n", req.RequestLine.Method)
+		fmt.Printf("- Target   :   %s\n", req.RequestLine.RequestTarget)
+		fmt.Printf("- Version  :   %s\n", req.RequestLine.HttpVersion)
 
   }
 }
