@@ -26,6 +26,7 @@ func ParseHeaders(data []byte) (string, string, error) {
 	fieldName := head[0]
 	fieldValue := bytes.TrimSpace(head[1])
 	return string(fieldName), string(fieldValue), nil
+	
 
 
 	
