@@ -6,10 +6,10 @@ import (
 	"io"
 )
 
-var BadReqLine 			= fmt.Errorf("Malformed Request-Line!")
+var BadReqLine   	= fmt.Errorf("Malformed Request-Line!")
 var BadHttpVer    	= fmt.Errorf("Unsupported Http Version!")
 var BadParseState 	= fmt.Errorf("Unable to Continue! Parsing Terminated!")
-var EndLine 				= []byte("\r\n")
+var EndLine 	    = []byte("\r\n")
 
 type RequestLine struct {
 	HttpVersion   string
@@ -43,7 +43,14 @@ func newRequest() *Request {
  }
 }
 
-
+// parses the http requests.
+// given the RFC's definition of a request:
+// Request = Request-Line
+//           *(( general-header
+//           | request-header
+//           | entity-header ) CRLF)
+//           CRLF
+//           [ message-body ]
 func (r *Request) parse(data []byte) (int, error) {
 	idx := 0
 	dance :
@@ -74,6 +81,10 @@ func (r *Request) parse(data []byte) (int, error) {
 	return idx, nil
 } 
 
+
+// parses the request line.
+// given the RFC's definition of a request line:
+// Request-Line   = Method SP Request-URI SP HTTP-Version CRLF
 func parseRequestLine(data []byte) (*RequestLine, int, error){
 	idx := bytes.Index(data, EndLine)
 	if idx == -1 {
@@ -96,7 +107,8 @@ func parseRequestLine(data []byte) (*RequestLine, int, error){
   return httpRequestLine, idx+len(EndLine), nil
 }
 
-
+// receives a request and sets the current state of the parser.
+// returns the parsed request.
 func RequestFromReader(reader io.Reader) (*Request, error) {
 	rl := newRequest()
 	buf := make([]byte, 1024)

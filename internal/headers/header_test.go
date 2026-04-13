@@ -7,7 +7,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-
+// test the headers parser.
+// given a particular number of edge cases considered while building the parser.
 func TestRequestLineParse(t *testing.T) {
 	// Test: Valid single header
 	headers := NewHeaders()

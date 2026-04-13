@@ -29,6 +29,9 @@ func (cr *chunkReader) Read(p []byte) (n int, err error) {
 
 	return n, nil
 }
+
+// test the request parser.
+// given a particular number of edge cases considered while building the parser.
 func TestRequestLineParse(t *testing.T) {
 	// Test: Good GET Request line
 	reader := &chunkReader{
