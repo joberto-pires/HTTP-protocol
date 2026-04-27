@@ -3,10 +3,13 @@ package headers
 import (
 	"bytes"
 	"fmt"
+	"keita_http/internal/headers"
 )
 
 // currently the headers are stored in a map.
-type Headers map[string]string
+type Headers struct {
+	header map[string]string
+}
 
 var endLine = []byte("\r\n")
 var badfdline = fmt.Errorf("malformed field-line!")
@@ -50,13 +53,15 @@ func ParseHeaders(data []byte) (string, string, error) {
 }
 
 // creates a new headers map.
-func NewHeaders() Headers {
-	return map[string]string{}
+func NewHeaders() *Headers {
+	return &Headers { 
+		header : map[string]string{},
+	}
 }
 
 //receives a given data and will parse it until the end of the headers.
 // if the headers are not finished, it will return the number of bytes parsed and a boolean indicating if the headers are finished.
-func (h Headers) Parse(data []byte) (int, bool, error) {
+func (h *Headers) Parse(data []byte) (int, bool, error) {
 	n := 0
 	done := false
 free :
